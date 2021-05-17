@@ -1,23 +1,23 @@
 [
     {
-        "model": "rareapi.categories",
+        "model": "rareapi.tags",
         "pk": 1,
         "fields": {
-            "label": "Religion"
+            "label": "Too much"
         }
     },
     {
-        "model": "rareapi.categories",
+        "model": "rareapi.tags",
         "pk": 2,
         "fields": {
-            "label": "Politics"
+            "label": "Not enough"
         }
     },
     {
-        "model": "rareapi.categories",
+        "model": "rareapi.tags",
         "pk": 3,
         "fields": {
-            "label": "Abortion"
+            "label": "Just right"
         }
     }
 ]

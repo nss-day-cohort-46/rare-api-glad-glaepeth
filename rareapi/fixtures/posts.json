@@ -1,6 +1,6 @@
 [
     {
-        "model": "rareapi.post_tags",
+        "model": "rareapi.posts",
         "pk": 1,
         "fields": {
             "user_id": 1,
@@ -13,7 +13,7 @@
         }
     },
     {
-        "model": "rareapi.post_users",
+        "model": "rareapi.posts",
         "pk": 2,
         "fields": {
             "user_id": 2,
@@ -26,7 +26,7 @@
         }
     },
     {
-        "model": "rareapi.post_users",
+        "model": "rareapi.posts",
         "pk": 3,
         "fields": {
             "tag_id": 3,
