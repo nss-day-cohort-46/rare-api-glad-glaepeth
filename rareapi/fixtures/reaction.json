@@ -1,0 +1,28 @@
+[
+    {
+        "model": "rareapi.reaction",
+        "pk": 1,
+        "fields": {
+            "image_url": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hakaimagazine.com%2Fnews%2Fscientists-discover-an-81-year-old-snapper%2F&psig=AOvVaw2LmpivtP-SQzfmspLspOUq&ust=1621363116487000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCe2riu0fACFQAAAAAdAAAAABAD",
+            "label": "Happy"
+        }
+    },
+    {
+        "model": "rareapi.reaction",
+        "pk": 2,
+        "fields": {
+            "image_url": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hakaimagazine.com%2Fnews%2Fscientists-discover-an-81-year-old-snapper%2F&psig=AOvVaw2LmpivtP-SQzfmspLspOUq&ust=1621363116487000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCe2riu0fACFQAAAAAdAAAAABAD",
+            "label": "Sad"
+        }
+    },
+    {
+        "model": "rareapi.reaction",
+        "pk": 3,
+        "fields": {
+            "image_url": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hakaimagazine.com%2Fnews%2Fscientists-discover-an-81-year-old-snapper%2F&psig=AOvVaw2LmpivtP-SQzfmspLspOUq&ust=1621363116487000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCe2riu0fACFQAAAAAdAAAAABAD",
+            "label": "Livid"
+        }
+    }
+]
+
+
