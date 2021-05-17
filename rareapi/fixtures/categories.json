@@ -1,0 +1,23 @@
+[
+    {
+        "model": "rareapi.categories",
+        "pk": 1,
+        "fields": {
+            "label": "Religion"
+        }
+    },
+    {
+        "model": "rareapi.categories",
+        "pk": 2,
+        "fields": {
+            "label": "Politics"
+        }
+    },
+    {
+        "model": "rareapi.categories",
+        "pk": 3,
+        "fields": {
+            "label": "Abortion"
+        }
+    }
+]
