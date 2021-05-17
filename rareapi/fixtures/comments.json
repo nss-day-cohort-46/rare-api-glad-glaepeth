@@ -1,30 +1,30 @@
 [
     {
-        "model": "rareapi.comments",
+        "model": "rareapi.comment",
         "pk": 1,
         "fields": {
-            "post_id": 1,
-            "author_id": 1,
+            "post": 1,
+            "author": 1,
             "content": "Content for post 1",
             "created_on": "2020-01-01"
         }
     },
     {
-        "model": "rareapi.comments",
+        "model": "rareapi.comment",
         "pk": 2,
         "fields": {
-            "post_id": 2,
-            "author_id": 2,
+            "post": 2,
+            "author": 2,
             "content": "Content for post 3",
             "created_on": "2020-02-02"
         }
     },
     {
-        "model": "rareapi.comments",
+        "model": "rareapi.comment",
         "pk": 3,
         "fields": {
-            "post_id": 3,
-            "author_id": 3,
+            "post": 3,
+            "author": 3,
             "content": "Content for post 3",
             "created_on": "2020-03-03"
         }
