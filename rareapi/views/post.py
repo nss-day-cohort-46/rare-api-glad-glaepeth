@@ -67,6 +67,22 @@ class PostView(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, pk):
+        
+        user = RareUser.objects.get(user=request.auth.user)
+        category = Category.objects.get(pk=request.data["category"])
+        post = Post.objects.get(pk=pk)
+        post.user = user
+        post.category = category
+        post.title = request.data["title"]
+        post.publication_date = request.data["publication_date"]
+        post.image_url = request.data["image_url"]
+        post.content = request.data["content"]
+        post.approved = request.data["approved"]
+        post.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
