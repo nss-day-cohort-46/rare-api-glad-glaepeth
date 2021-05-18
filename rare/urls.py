@@ -27,6 +27,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'categories', CategoryView, 'category')
 
 router.register(r'tags', TagView, "tags")
+
 router.register(r'users', RareUserView, 'user')
 
 
