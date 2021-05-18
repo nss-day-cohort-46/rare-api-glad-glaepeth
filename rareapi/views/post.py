@@ -47,8 +47,11 @@ class PostView(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-    def create(self, request):
-        #TODO: create method
+    # def create(self, request):
+    #     post = Post()
+    #     category = Category.objects.get(pk=request.data["categoryId"])
+    #     post.category = category
+    #     post.
 
 
 
