@@ -4,14 +4,14 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
-from rareapi.models import RareUser, rare_users
+from rareapi.models import RareUser
 
 
 @csrf_exempt
 def login_user(request):
     '''Handles the authentication of a rareuser
     Method arguments:
-      request -- The full HTTP request object
+        request -- The full HTTP request object
     '''
 
     req_body = json.loads(request.body.decode())
