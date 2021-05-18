@@ -32,65 +32,25 @@ class RareUserView(ViewSet):
         serializer = RareUserSerializer(
             users, many=True, context={'request': request})
         return Response(serializer.data)
-
-
-   
-    # def create(self, request):
-    #     """Handle POST operations
-
-    #     Returns:
-    #         Response -- JSON serialized game instance
-    #     """
-
-    #     # Uses the token passed in the `Authorization` header
-    #     gamer = Gamer.objects.get(user=request.auth.user)
-
-        
-    #     game = RareUser()
-    #     game.ages = request.data["ages"]
-    #     game.description = request.data["description"]
-    #     game.est_time = request.data["est_time"]
-    #     game.maker = request.data["maker"]
-    #     game.number_of_players = request.data["number_of_players"]
-    #     game.title = request.data["title"]
-    #     game.year = request.data["year"]
-        
-
-    #     try:
-    #         game.save()
-    #         categories = Category.objects.in_bulk(request.data["categories"])
-    #         game.categories.set(categories)
-    #         serializer = RareUserSerializer(game, context={'request': request})
-    #         return Response(serializer.data)
-
-    #     except ValidationError as ex:
-    #         return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
-    
     
 
     # # Edit a record via PUT method
-    # def update(self, request, pk=None):
-    #     """Handle PUT requests for a game
+    def update(self, request, pk=None):
+        """Handle PUT requests for a game
 
-    #     Returns:
-    #         Response -- Empty body with 204 status code
-    #     """
-    #     gamer = Gamer.objects.get(user=request.auth.user)
-    #     game = RareUser.objects.get(pk=pk)
-    #     game.ages = request.data["ages"]
-    #     game.description = request.data["description"]
-    #     game.est_time = request.data["est_time"]
-    #     game.maker = request.data["maker"]
-    #     game.number_of_players = request.data["number_of_players"]
-    #     game.title = request.data["title"]
-    #     game.year = request.data["year"]
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        # gamer = Gamer.objects.get(user=request.auth.user)
+        user = RareUser.objects.get(pk=pk)
+        user.bio = request.data["bio"]
+        user.profile_image_url = request.data["profile_image_url"]
+        user.created_on = request.data["created_on"]
+        user.active = request.data["active"]
         
-    #     categories = Category.objects.in_bulk(request.data["categories"])
-    #     game.categories.set(categories)
-
-    #     game.save()
+        user.save()
     
-    #     return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
    
 
     # DELETE a single record 
