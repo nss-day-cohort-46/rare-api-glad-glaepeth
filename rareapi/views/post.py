@@ -30,11 +30,6 @@ class PostView(ViewSet):
         tag = self.request.query_params.get('tag', None)
         if tag is not None:
             posts = posts.filter(tag__id=tag)
-        
-        
-        #TODO: check on connecting category id
-        #TODO:join tags table
-
 
 
         serializer = PostSerializer(
@@ -51,6 +46,9 @@ class PostView(ViewSet):
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
+    def create(self, request):
+        #TODO: create method
 
 
 
