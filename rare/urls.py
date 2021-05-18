@@ -26,6 +26,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'comments', CommentView, 'comment')
 router.register(r'tags', TagView, "tags")
 router.register(r'users', RareUserView, 'user')
+router.register(r'comment', CommentView, 'comment')
 
 
 urlpatterns = [

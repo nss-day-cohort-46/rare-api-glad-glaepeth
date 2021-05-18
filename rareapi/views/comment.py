@@ -25,7 +25,7 @@ class CommentView(ViewSet):
             return HttpResponseServerError(ex)
 
 
-    # # Get a list of all records
+    # Get a list of all records
     def list(self, request):
         users = Comment.objects.all()
 
@@ -35,7 +35,33 @@ class CommentView(ViewSet):
         return Response(serializer.data)
 
 
-    # # Edit a record via PUT method
+    # Create a record
+    def create(self, request):
+        """Handle POST operations for comments
+
+        Returns:
+            Response -- JSON serialized event instance
+        """
+        comment = Comment()
+        comment.content = request.data["content"]
+        comment.created_on = request.data["created_on"]
+
+        post = Post.objects.get(pk=request.data["postId"])
+        comment.post = post
+        
+        author = RareUser.objects.get(user = request.auth.user)
+        comment.author = author
+        
+        
+
+        try:
+            comment.save()
+            serializer = CommentSerializer(comment, context={'request': request})
+            return Response(serializer.data)
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Edit a record via PUT method
     def update(self, request, pk=None):
         """Handle PUT requests for a game
         Returns:
@@ -48,7 +74,7 @@ class CommentView(ViewSet):
 
         post = Post.objects.get(pk=request.data["postId"])
         comment.post = post
-        author = RareUser.objects.get(pk=request.data["authorId"])
+        author = RareUser.objects.get(user = request.auth.user)
         comment.author = author
 
         comment.save()
