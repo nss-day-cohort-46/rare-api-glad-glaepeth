@@ -1,3 +1,4 @@
+from rareapi.models.rare_users import RareUser
 from django.core.exceptions import ValidationError
 from rest_framework import status
 from django.http import HttpResponseServerError
@@ -5,7 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from rareapi.models import Comment
+from rareapi.models import Comment, Post
 from django.contrib.auth.models import User
 
 
@@ -44,8 +45,11 @@ class CommentView(ViewSet):
         comment = Comment.objects.get(pk=pk)
         comment.content = request.data["content"]
         comment.created_on = request.data["created_on"]
-        comment.post = request.data["post"]
-        comment.author = request.data["author"]
+
+        post = Post.objects.get(pk=request.data["postId"])
+        comment.post = post
+        author = RareUser.objects.get(pk=request.data["authorId"])
+        comment.author = author
 
         comment.save()
 
