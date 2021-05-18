@@ -42,6 +42,16 @@ class PostView(ViewSet):
         )
         return Response(serializer.data)
                 
+    
+    def retrieve(self, request, pk):
+
+        try:
+            post = Post.objects.get(pk=pk)
+            serializer = PostSerializer(post, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
 
 
 class PostSerializer(serializers.ModelSerializer):
