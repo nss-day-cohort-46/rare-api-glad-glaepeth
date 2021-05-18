@@ -15,21 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-<<<<<<< HEAD
-from rareapi.views import register_user, login_user, TagView
-=======
 from rareapi.views import register_user, login_user
 from rareapi.views import RareUserView
->>>>>>> main
+from rareapi.views import TagView
 from rest_framework import routers
 from django.conf.urls import include
 
 router = routers.DefaultRouter(trailing_slash=False)
-<<<<<<< HEAD
 router.register(r'tags', TagView, "tags")
-=======
 router.register(r'users', RareUserView, 'user')
->>>>>>> main
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
