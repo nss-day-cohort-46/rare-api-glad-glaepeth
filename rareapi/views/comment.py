@@ -1,19 +1,16 @@
-from rareapi.models.rare_users import RareUser
 from django.core.exceptions import ValidationError
-from rest_framework import status
 from django.http import HttpResponseServerError
-from rest_framework.viewsets import ViewSet
+from rest_framework import serializers, status
 from rest_framework.response import Response
-from rest_framework import serializers
-from rest_framework import status
+from rest_framework.viewsets import ViewSet
 from rareapi.models import Comment, Post
-from django.contrib.auth.models import User
+from rareapi.models.rare_users import RareUser
 
 
 class CommentView(ViewSet):
 
-    # Get a single record
     def retrieve(self, request, pk=None):
+        """Get a single record"""
         try:
             comment = Comment.objects.get(pk=pk)
             # categories = Category.objects.filter(categorygame__)
@@ -46,7 +43,7 @@ class CommentView(ViewSet):
         comment.content = request.data["content"]
         comment.created_on = request.data["created_on"]
 
-        post = Post.objects.get(pk=request.data["postId"])
+        post = Post.objects.get(pk=request.data["post_id"])
         comment.post = post
         
         author = RareUser.objects.get(user = request.auth.user)
