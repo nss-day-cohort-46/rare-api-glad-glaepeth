@@ -6,9 +6,10 @@ from rareapi.views import RareUserView, TagView, CategoryView, CommentView
 
 from rest_framework import routers
 from django.conf.urls import include
+from rareapi.views import PostView
 
 router = routers.DefaultRouter(trailing_slash=False)
-
+router.register(r'posts', PostView, 'post')
 router.register(r'tags', TagView, "tags")
 router.register(r'users', RareUserView, 'user')
 router.register(r'comments', CommentView, 'comment')
