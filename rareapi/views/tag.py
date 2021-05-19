@@ -1,0 +1,131 @@
+"""View module for handling requests"""
+from django.core.exceptions import ValidationError
+from rest_framework import status
+from django.http import HttpResponseServerError
+from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework import serializers
+from rest_framework import status
+from rareapi.models import Tag, PostTag
+
+
+class TagView(ViewSet):
+    """Rare App"""
+
+    def create(self, request):
+        """Handle POST operations
+        Returns:
+            Response -- JSON serialized game instance
+        """
+
+        # Create a new Python instance of the Tag class
+        # and set its properties from what was sent in the
+        # body of the request from the client.
+        tag = Tag()
+        # tag.id = request.data['id']
+        tag.label = request.data["label"]
+        # print('request.data: ', request.data);
+
+
+        # Try to save the new game to the database, then
+        # serialize the game instance as JSON, and send the
+        # JSON as a response to the client request
+        try:
+            tag.save()
+            serializer = TagSerializer(tag, context={'request': request})
+            return Response(serializer.data)
+
+        # If anything went wrong, catch the exception and
+        # send a response with a 400 status code to tell the
+        # client that something was wrong with its request data
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+    def retrieve(self, request, pk):
+        """Handle GET requests for single game
+
+        Returns:
+            Response -- JSON serialized game instance
+        """
+        try:
+            # `pk` is a parameter to this function, and
+            # Django parses it from the URL route parameter
+            #   http://localhost:8000/tags/2
+            #
+            # The `2` at the end of the route becomes `pk`
+            tag = Tag.objects.get(pk=pk)
+            serializer = TagSerializer(tag, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
+
+    # def update(self, request, pk):
+    #     """Handle PUT requests for a game
+    #     Returns:
+    #         Response -- Empty body with 204 status code
+    #     """
+    #     gamer = Gamer.objects.get(user=request.auth.user)
+
+    #     # Do mostly the same thing as POST, but instead of
+    #     # creating a new instance of Game, get the game record
+    #     # from the database whose primary key is `pk`
+    #     game = Game.objects.get(pk=pk)
+    #     gametype = GameType.objects.get(pk=request.data["gameTypeId"])
+    #     # console.log('gametype: ', gametype);
+
+
+    #     game.title = request.data["title"]
+    #     game.maker = request.data["maker"]
+    #     game.numberOfPlayers = request.data["numberOfPlayers"]
+    #     game.difficulty = request.data["difficulty"]
+    #     game.gamer = gamer
+    #     game.game_type = gametype
+
+    #     game.save()
+
+    #     # 204 status code means everything worked but the
+    #     # server is not sending back any data in the response
+    #     return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    # def destroy(self, request, pk):
+    #     """Handle DELETE requests for a single game
+
+    #     Returns:
+    #         Response -- 200, 404, or 500 status code
+    #     """
+    #     try:
+    #         game = Game.objects.get(pk=pk)
+    #         game.delete()
+
+    #         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    #     except Game.DoesNotExist as ex:
+    #         return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+    #     except Exception as ex:
+    #         return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def list(self, request):
+        """Handle GET requests to games resource
+
+        Returns:
+            Response -- JSON serialized list of games
+        """
+        # Get all game records from the database
+        tags = Tag.objects.all()
+
+        serializer = TagSerializer(
+            tags, many=True, context={'request': request})
+        return Response(serializer.data)
+
+class TagSerializer(serializers.ModelSerializer):
+    """JSON serializer for tags
+
+    Arguments:
+        serializer type
+    """
+    class Meta:
+        model = Tag
+        fields = ('id', 'label')
