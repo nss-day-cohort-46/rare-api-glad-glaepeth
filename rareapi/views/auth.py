@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 from rareapi.models import RareUser
+from rest_framework.decorators import permission_classes, api_view
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+
 
 
 @csrf_exempt
@@ -27,7 +31,7 @@ def login_user(request):
         # If authentication was successful, respond with their token
         if authenticated_user is not None:
             token = Token.objects.get(user=authenticated_user)
-            data = json.dumps({"valid": True, "token": token.key})
+            data = json.dumps({"valid": True, "token": token.key, "id": authenticated_user.id, "admin": authenticated_user.is_staff})
             return HttpResponse(data, content_type='application/json')
 
         else:
@@ -40,7 +44,7 @@ def login_user(request):
 def register_user(request):
     '''Handles the creation of a new rareuser for authentication
     Method arguments:
-      request -- The full HTTP request object
+        request -- The full HTTP request object
     '''
     
     # Load the JSON string of the request body into a dict
@@ -77,3 +81,8 @@ def register_user(request):
     # Return the token to the client
     data = json.dumps({"token": token.key})
     return HttpResponse(data, content_type='application/json')
+
+@api_view()
+@permission_classes([IsAdminUser])
+def is_admin(request):
+    return Response({'admin': True})

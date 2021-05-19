@@ -1,4 +1,4 @@
-from .auth import login_user, register_user
+from .auth import login_user, register_user, is_admin
 from .post import PostView
 from .comment import CommentView
 from .tag import TagView
