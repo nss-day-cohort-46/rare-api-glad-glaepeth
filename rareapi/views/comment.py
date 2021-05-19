@@ -27,11 +27,11 @@ class CommentView(ViewSet):
 
     # Get a list of all records
     def list(self, request):
-        users = Comment.objects.all()
+        comments = Comment.objects.all()
 
 
         serializer = CommentSerializer(
-            users, many=True, context={'request': request})
+            comments, many=True, context={'request': request})
         return Response(serializer.data)
 
 
