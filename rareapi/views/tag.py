@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from rareapi.models import Tag, PostTag
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAdminUser
 
 
 class TagView(ViewSet):
@@ -26,7 +28,6 @@ class TagView(ViewSet):
         tag.label = request.data["label"]
         # print('request.data: ', request.data);
 
-
         # Try to save the new game to the database, then
         # serialize the game instance as JSON, and send the
         # JSON as a response to the client request
@@ -40,8 +41,6 @@ class TagView(ViewSet):
         # client that something was wrong with its request data
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
-
-
 
     def retrieve(self, request, pk):
         """Handle GET requests for single game
@@ -61,43 +60,6 @@ class TagView(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-    def update(self, request, pk):
-        """Handle PUT requests for a game
-        Returns:
-            Response -- Empty body with 204 status code
-        """
-        # Do mostly the same thing as POST, but instead of
-        # creating a new instance of Game, get the game record
-        # from the database whose primary key is `pk`
-        
-        tag = Tag.objects.get(pk=pk)
-
-        tag.label = request.data["label"]
-
-        tag.save()
-
-        # 204 status code means everything worked but the
-        # server is not sending back any data in the response
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
-
-    def destroy(self, request, pk):
-        """Handle DELETE requests for a single tag
-
-        Returns:
-            Response -- 200, 404, or 500 status code
-        """
-        try:
-            tag = Tag.objects.get(pk=pk)
-            tag.delete()
-
-            return Response({}, status=status.HTTP_204_NO_CONTENT)
-
-        except Tag.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-
-        except Exception as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
     def list(self, request):
         """Handle GET requests to games resource
 
@@ -110,6 +72,51 @@ class TagView(ViewSet):
         serializer = TagSerializer(
             tags, many=True, context={'request': request})
         return Response(serializer.data)
+
+    def update(self, request, pk):
+        """Handle PUT requests for a game
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        # Do mostly the same thing as POST, but instead of
+        # creating a new instance of Game, get the game record
+        # from the database whose primary key is `pk`
+        if request.auth.user.is_staff:
+            tag = Tag.objects.get(pk=pk)
+
+            tag.label = request.data["label"]
+
+            tag.save()
+
+            # 204 status code means everything worked but the
+            # server is not sending back any data in the response
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({}, status=status.HTTP_401_UNAUTHORIZED)
+
+    # @permission_classes([IsAdminUser])
+    def destroy(self, request, pk):
+        """Handle DELETE requests for a single tag
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        
+        if request.auth.user.is_staff:
+            try:
+                tag = Tag.objects.get(pk=pk)
+                tag.delete()
+
+                return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+            except Tag.DoesNotExist as ex:
+                return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+            except Exception as ex:
+                return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response({}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 class TagSerializer(serializers.ModelSerializer):
     """JSON serializer for tags
