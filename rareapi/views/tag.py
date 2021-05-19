@@ -61,51 +61,42 @@ class TagView(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-    # def update(self, request, pk):
-    #     """Handle PUT requests for a game
-    #     Returns:
-    #         Response -- Empty body with 204 status code
-    #     """
-    #     gamer = Gamer.objects.get(user=request.auth.user)
+    def update(self, request, pk):
+        """Handle PUT requests for a game
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        # Do mostly the same thing as POST, but instead of
+        # creating a new instance of Game, get the game record
+        # from the database whose primary key is `pk`
+        
+        tag = Tag.objects.get(pk=pk)
 
-    #     # Do mostly the same thing as POST, but instead of
-    #     # creating a new instance of Game, get the game record
-    #     # from the database whose primary key is `pk`
-    #     game = Game.objects.get(pk=pk)
-    #     gametype = GameType.objects.get(pk=request.data["gameTypeId"])
-    #     # console.log('gametype: ', gametype);
+        tag.label = request.data["label"]
 
+        tag.save()
 
-    #     game.title = request.data["title"]
-    #     game.maker = request.data["maker"]
-    #     game.numberOfPlayers = request.data["numberOfPlayers"]
-    #     game.difficulty = request.data["difficulty"]
-    #     game.gamer = gamer
-    #     game.game_type = gametype
+        # 204 status code means everything worked but the
+        # server is not sending back any data in the response
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-    #     game.save()
+    def destroy(self, request, pk):
+        """Handle DELETE requests for a single tag
 
-    #     # 204 status code means everything worked but the
-    #     # server is not sending back any data in the response
-    #     return Response({}, status=status.HTTP_204_NO_CONTENT)
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        try:
+            tag = Tag.objects.get(pk=pk)
+            tag.delete()
 
-    # def destroy(self, request, pk):
-    #     """Handle DELETE requests for a single game
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-    #     Returns:
-    #         Response -- 200, 404, or 500 status code
-    #     """
-    #     try:
-    #         game = Game.objects.get(pk=pk)
-    #         game.delete()
+        except Tag.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
-    #         return Response({}, status=status.HTTP_204_NO_CONTENT)
-
-    #     except Game.DoesNotExist as ex:
-    #         return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-
-    #     except Exception as ex:
-    #         return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
         """Handle GET requests to games resource
