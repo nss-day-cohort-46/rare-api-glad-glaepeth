@@ -6,7 +6,7 @@
             "post": 1,
             "author": 1,
             "content": "Content for post 1",
-            "created_on": "2020-01-01"
+            "created_on": "2020-01-01T14:51:39.989Z"
         }
     },
     {
@@ -16,7 +16,7 @@
             "post": 2,
             "author": 2,
             "content": "Content for post 3",
-            "created_on": "2020-02-02"
+            "created_on": "2020-02-02T14:51:39.989Z"
         }
     },
     {
@@ -26,7 +26,7 @@
             "post": 3,
             "author": 3,
             "content": "Content for post 3",
-            "created_on": "2020-03-03"
+            "created_on": "2020-03-03T14:51:39.989Z"
         }
     }
 ]

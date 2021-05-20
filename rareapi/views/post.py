@@ -30,6 +30,11 @@ class PostView(ViewSet):
         tag = self.request.query_params.get('tag', None)
         if tag is not None:
             posts = posts.filter(tag__id=tag)
+        
+        #Filter by tag
+        user = self.request.query_params.get('user', None)
+        if user is not None:
+            posts = posts.filter(user__id=user)
 
 
         serializer = PostSerializer(
