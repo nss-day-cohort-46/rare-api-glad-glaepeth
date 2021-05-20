@@ -41,27 +41,33 @@ class CategoryView(ViewSet):
 
     def update(self, request, pk=None):
 
+        if request.auth.user.is_staff:
+            category = Category.objects.get(pk=pk)
+            category.label = request.data["label"]
+            category.save()
 
-        category = Category.objects.get(pk=pk)
-        category.label = request.data["label"]
-        category.save()
-
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({}, status=status.HTTP_401_UNAUTHORIZED)
     
     def delete(self, request, pk=None):
 
-        try:
-            category = Category.objects.get(pk=pk)
-            category.delete()
+        if request.auth.user.is_staff:
 
-            return Response({}, status=status.HTTP_204_NO_CONTENT)
+            try:
+                category = Category.objects.get(pk=pk)
+                category.delete()
 
-        except Category.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+                return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-        except Exception as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+            except Category.DoesNotExist as ex:
+                return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+            except Exception as ex:
+                return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response({}, status=status.HTTP_401_UNAUTHORIZED)
+            
 class CategorySerializer(serializers.ModelSerializer):
 # how we build the object
 
