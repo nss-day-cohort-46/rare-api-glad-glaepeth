@@ -27,6 +27,7 @@ def login_user(request):
         username = req_body['username']
         password = req_body['password']
         authenticated_user = authenticate(username=username, password=password)
+        # console.log('authenticated_user: ', authenticated_user);
 
         # If authentication was successful, respond with their token
         if authenticated_user is not None:
@@ -79,7 +80,8 @@ def register_user(request):
     token = Token.objects.create(user=new_user)
 
     # Return the token to the client
-    data = json.dumps({"token": token.key})
+    data = json.dumps({"valid": True, "token": token.key, "id": new_user.id, "admin": new_user.is_staff})
+
     return HttpResponse(data, content_type='application/json')
 
 @api_view()
