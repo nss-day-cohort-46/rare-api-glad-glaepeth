@@ -19,7 +19,8 @@ class PostView(ViewSet):
         """
 
         rare_user = RareUser.objects.get(user=request.auth.user)
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-publication_date')
+
 
         #Filter by category
         category = self.request.query_params.get('category', None)
