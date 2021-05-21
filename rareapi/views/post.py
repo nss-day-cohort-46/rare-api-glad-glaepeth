@@ -20,6 +20,7 @@ class PostView(ViewSet):
 
         rare_user = RareUser.objects.get(user=request.auth.user)
         posts = Post.objects.all().order_by('-publication_date')
+        
 
 
         #Filter by category
@@ -64,9 +65,12 @@ class PostView(ViewSet):
         post.image_url = request.data["image_url"]
         post.content = request.data["content"]
         post.approved = request.data["approved"]
+        
 
         try:
             post.save()
+            tags = Tag.objects.in_bulk(request.data["tags"])
+            post.tags.set(tags)
             serializer = PostSerializer(post, context={'request': request})
             return Response(serializer.data)
 
@@ -85,6 +89,10 @@ class PostView(ViewSet):
         post.image_url = request.data["image_url"]
         post.content = request.data["content"]
         post.approved = request.data["approved"]
+
+        tags = Tag.objects.in_bulk(request.data["tags"])
+        post.tags.set(tags)
+
         post.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -120,11 +128,18 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'label']
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ('id', 'label')
 
 class PostSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=False)
     user = PostUserSerializer(many=False)
+    tags = TagSerializer(many=True)
 
     class Meta:
         model = Post
-        fields = ('id', 'user', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved')                
+        fields = ('id', 'user', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved', "tags")                
+
+
