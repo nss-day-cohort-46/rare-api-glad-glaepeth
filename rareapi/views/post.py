@@ -92,7 +92,7 @@ class PostView(ViewSet):
 
         tags = Tag.objects.in_bulk(request.data["tags"])
         post.tags.set(tags)
-        
+
         post.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
