@@ -10,7 +10,6 @@ from rareapi.models import Subscription
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAdminUser
 
-
 class SubscriptionView(ViewSet):
     """Rare App"""
 
@@ -119,7 +118,6 @@ class SubscriptionView(ViewSet):
                 return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response({}, status=status.HTTP_401_UNAUTHORIZED)
-
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     """JSON serializer for subscriptions
