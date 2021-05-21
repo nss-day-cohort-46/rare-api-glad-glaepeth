@@ -76,7 +76,7 @@ class RareUserView(ViewSet):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'is_staff', 'email')
+        fields = ('id', 'first_name', 'last_name', 'username', 'is_staff', 'email')
         
 
 class RareUserSerializer(serializers.ModelSerializer):
